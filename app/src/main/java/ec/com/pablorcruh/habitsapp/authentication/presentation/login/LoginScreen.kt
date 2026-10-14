@@ -19,12 +19,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ec.com.pablorcruh.habitsapp.R
 import ec.com.pablorcruh.habitsapp.authentication.presentation.login.components.LoginForm
 import ec.com.pablorcruh.habitsapp.core.presentation.HabitsTitle
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel()
+){
+    val state = viewModel.state
     Box(
       modifier = Modifier.fillMaxSize()
     ){
@@ -56,7 +60,10 @@ fun LoginScreen(){
                 HabitsTitle(title = "Monumental Habits")
             }
 
-            LoginForm()
+            LoginForm(
+                state,
+                viewModel::onEvent
+            )
         }
     }
 }

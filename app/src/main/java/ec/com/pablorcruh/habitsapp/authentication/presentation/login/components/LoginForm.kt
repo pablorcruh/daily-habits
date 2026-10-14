@@ -18,7 +18,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -28,14 +30,21 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginEvent
+import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginState
 import ec.com.pablorcruh.habitsapp.core.presentation.HabitsButton
 import ec.com.pablorcruh.habitsapp.core.presentation.HabitsPasswordTextField
 import ec.com.pablorcruh.habitsapp.core.presentation.HabitsTextField
 
 @Composable
 fun LoginForm(
+    state: LoginState,
+    onEvent: (LoginEvent) -> Unit,
     modifier: Modifier = Modifier
 ){
+    val focusManager = LocalFocusManager.current
+
+
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Column(
             modifier = modifier.background(Color.White, shape = RoundedCornerShape(20.dp)),
@@ -51,8 +60,10 @@ fun LoginForm(
                 color = MaterialTheme.colorScheme.background
             )
             HabitsTextField(
-                value = "Email",
-                onValueChange = {},
+                value = state.email,
+                onValueChange = {
+                    onEvent(LoginEvent.EmailChanged(it))
+                },
                 placeholder = "Email",
                 contentDescription = "Enter Email",
                 modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp).padding(horizontal = 20.dp),
@@ -62,29 +73,38 @@ fun LoginForm(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
                 ),
-                keyboardActions = KeyboardActions (onAny = {} ),
-                errorMessage = null,
-                isEnabled = true
+                keyboardActions = KeyboardActions (onAny = {
+                    focusManager.moveFocus(FocusDirection.Next)
+                } ),
+                errorMessage = state.errorEmail,
+                isEnabled = !state.isLoading
             )
             HabitsPasswordTextField(
-                value = "Password",
-                onValueChange = {},
+                value = state.password,
+                onValueChange = {
+                    onEvent(LoginEvent.PasswordChanged(it))
+                },
                 contentDescription = "Enter Password",
                 modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp).padding(horizontal = 20.dp),
-                errorMessage = null,
-                isEnabled = true,
+                errorMessage = state.errorPassword,
+                isEnabled = !state.isLoading,
                 keyboardOptions = KeyboardOptions(
                     autoCorrect = false,
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 ),
-                keyboardActions = KeyboardActions (onAny = {} )
+                keyboardActions = KeyboardActions (onAny = {
+                    focusManager.clearFocus()
+                    onEvent(LoginEvent.Login)
+                } )
             )
             HabitsButton(
                 text = "Login",
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                isEnabled = true
-            ) { }
+                isEnabled = !state.isLoading
+            ) {
+                onEvent(LoginEvent.Login)
+            }
             TextButton(onClick = {}){
                 Text(
                     text = "Forgot Password?",
@@ -92,7 +112,9 @@ fun LoginForm(
                     textDecoration = TextDecoration.Underline
                 )
             }
-            TextButton(onClick = {}){
+            TextButton(onClick = {
+                onEvent(LoginEvent.SignUp)
+            }){
                 Text(
                     text = buildAnnotatedString {
                         append("Don't have an account? ")
@@ -105,10 +127,4 @@ fun LoginForm(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LoginFormPreview(){
-    LoginForm()
 }
