@@ -10,6 +10,8 @@ import ec.com.pablorcruh.habitsapp.authentication.domain.matcher.EmailMatcher
 import ec.com.pablorcruh.habitsapp.authentication.domain.repository.AuthenticationRepository
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LoginUseCases
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LoginWithEmailUseCase
+import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.SignUpUseCases
+import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.SignupWithEmailUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.ValidateEmailUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.ValidatePasswordUseCase
 import javax.inject.Singleton
@@ -23,22 +25,32 @@ object AuthenticationModule {
     fun providesAuthenticationRepository(): AuthenticationRepository{
         return AuthenticationRepositoryImpl()
     }
-
     @Provides
     @Singleton
     fun providesEmailMatcher(): EmailMatcher{
         return EmailMatcherImpl()
     }
-
-
-
     @Provides
     @Singleton
-    fun providesLoginUseCases(repository: AuthenticationRepository, matcher: EmailMatcher): LoginUseCases {
+    fun providesLoginUseCases(
+        repository: AuthenticationRepository,
+        matcher: EmailMatcher): LoginUseCases {
        return LoginUseCases(
            validateEmailUseCase = ValidateEmailUseCase(matcher),
            validatePasswordUseCase = ValidatePasswordUseCase(),
            loginWithEmailUseCase = LoginWithEmailUseCase(repository)
        )
-   }
+    }
+    @Provides
+    @Singleton
+    fun provideSignUpUseCases(
+        emailMatcher: EmailMatcher,
+        repository: AuthenticationRepository
+    ): SignUpUseCases{
+        return SignUpUseCases(
+            validateEmail = ValidateEmailUseCase(emailMatcher),
+            validatePassword = ValidatePasswordUseCase(),
+            signupWithEmail = SignupWithEmailUseCase(repository)
+        )
+    }
 }

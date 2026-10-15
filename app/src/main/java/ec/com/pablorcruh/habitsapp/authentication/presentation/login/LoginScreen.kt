@@ -39,11 +39,6 @@ fun LoginScreen(
         }
     }
 
-    LaunchedEffect(state.signUp){
-        if(state.signUp){
-            onSignUp()
-        }
-    }
 
     Box(
       modifier = Modifier.fillMaxSize()
@@ -78,7 +73,8 @@ fun LoginScreen(
 
             LoginForm(
                 state,
-                viewModel::onEvent
+                viewModel::onEvent,
+                onSignUp
             )
         }
     }

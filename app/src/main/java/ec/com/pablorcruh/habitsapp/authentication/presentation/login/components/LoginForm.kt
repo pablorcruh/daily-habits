@@ -39,6 +39,7 @@ import ec.com.pablorcruh.habitsapp.core.presentation.HabitsTextField
 fun LoginForm(
     state: LoginState,
     onEvent: (LoginEvent) -> Unit,
+    onSignUp: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val focusManager = LocalFocusManager.current
@@ -112,9 +113,7 @@ fun LoginForm(
                     textDecoration = TextDecoration.Underline
                 )
             }
-            TextButton(onClick = {
-                onEvent(LoginEvent.SignUp)
-            }){
+            TextButton(onClick = onSignUp){
                 Text(
                     text = buildAnnotatedString {
                         append("Don't have an account? ")

@@ -4,12 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.PasswordResult
+import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.SignUpUseCases
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-
+    private val signupUseCases: SignUpUseCases
 ) : ViewModel(){
     var state by mutableStateOf(SignupState())
         private set
@@ -28,7 +32,7 @@ class SignupViewModel @Inject constructor(
             SignupEvent.SignUp ->{
                     signUp()
             }
-            SignupEvent.SignIn ->{
+            SignupEvent.LogIn ->{
                 state = state.copy(
                    logIn = true
                 )
@@ -37,6 +41,41 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun signUp(){
-
+        state = state.copy(
+            emailError = null,
+            passwordError = null
+        )
+        if(!signupUseCases.validateEmail(state.email)){
+            state = state.copy(
+                emailError = "Invalid email"
+            )
+        }
+        val passwordResult = signupUseCases.validatePassword(state.password)
+        if(passwordResult is PasswordResult.Invalid){
+            state = state.copy(
+                passwordError = passwordResult.errorMessage
+            )
+        }
+        if(state.emailError == null && state.passwordError == null){
+            state = state.copy(
+                isLoading = true
+            )
+            viewModelScope.launch {
+                signupUseCases.signupWithEmail(state.email, state.password)
+                    .onSuccess {
+                        state = state.copy(
+                            isSignedIn = true
+                        )
+                    }
+                    .onFailure {
+                        state = state.copy(
+                            emailError = it.message
+                        )
+                    }
+            }
+            state = state.copy(
+                isLoading = false
+            )
+        }
     }
 }
