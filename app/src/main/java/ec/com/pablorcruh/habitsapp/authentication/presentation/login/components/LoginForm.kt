@@ -3,7 +3,6 @@ package ec.com.pablorcruh.habitsapp.authentication.presentation.login.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginEvent
 import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginState
@@ -43,9 +42,10 @@ fun LoginForm(
     modifier: Modifier = Modifier
 ){
     val focusManager = LocalFocusManager.current
-
-
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        if(state.isLoading){
+            CircularProgressIndicator()
+        }
         Column(
             modifier = modifier.background(Color.White, shape = RoundedCornerShape(20.dp)),
             horizontalAlignment = Alignment.CenterHorizontally){
@@ -76,7 +76,7 @@ fun LoginForm(
                 keyboardActions = KeyboardActions (onAny = {
                     focusManager.moveFocus(FocusDirection.Next)
                 } ),
-                errorMessage = state.errorEmail,
+                errorMessage = state.emailError,
                 isEnabled = !state.isLoading
             )
             HabitsPasswordTextField(
@@ -86,7 +86,7 @@ fun LoginForm(
                 },
                 contentDescription = "Enter Password",
                 modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp).padding(horizontal = 20.dp),
-                errorMessage = state.errorPassword,
+                errorMessage = state.passwordError,
                 isEnabled = !state.isLoading,
                 keyboardOptions = KeyboardOptions(
                     autoCorrect = false,
@@ -125,6 +125,9 @@ fun LoginForm(
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
+        }
+        if(state.isLoading){
+            CircularProgressIndicator()
         }
     }
 }

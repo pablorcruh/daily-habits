@@ -1,5 +1,6 @@
 package ec.com.pablorcruh.habitsapp.navigation
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,7 +23,18 @@ fun NavigationHost(
             })
         }
         composable(NavigationRoute.Login.route){
-            LoginScreen()
+            LoginScreen(onLogin = {
+                navHostController.popBackStack()
+                navHostController.navigate(NavigationRoute.Home.route)
+            }, onSignUp = {
+                navHostController.navigate(NavigationRoute.SignUp.route)
+            })
+        }
+        composable(NavigationRoute.SignUp.route){
+            Text(text = "sign up screen")
+        }
+        composable(NavigationRoute.Home.route){
+            Text(text = "home screen")
         }
     }
 }
