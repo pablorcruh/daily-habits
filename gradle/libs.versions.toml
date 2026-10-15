@@ -23,6 +23,7 @@ foundationVersion = "1.12.1"
 uiToolingPreviewVersion = "1.12.1"
 uiToolingVersion = "1.12.1"
 material = "1.12.1"
+googleServie = "4.5.0"
 
 
 [libraries]
@@ -68,8 +69,15 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiToolingPreviewVersion" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiToolingVersion" }
 
+firebase-analitycs = {group = "com.google.firebase", name = "firebase-analytics"}
+firebase-authentication = {group = "com.google.firebase", name = "firebase-auth"}
+firebase-firestore = {group="com.google.firebase", name="firebase-firestore"}
+firebase-storage = {group = "com.google.firebase", name = "firebase-storage"}
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 devTools = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+googleService = {id = "com.google.gms.google-services",version.ref = "googleServie"}
