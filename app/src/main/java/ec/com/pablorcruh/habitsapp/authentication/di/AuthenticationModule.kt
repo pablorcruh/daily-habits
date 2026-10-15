@@ -8,6 +8,7 @@ import ec.com.pablorcruh.habitsapp.authentication.data.matcher.EmailMatcherImpl
 import ec.com.pablorcruh.habitsapp.authentication.data.repository.AuthenticationRepositoryImpl
 import ec.com.pablorcruh.habitsapp.authentication.domain.matcher.EmailMatcher
 import ec.com.pablorcruh.habitsapp.authentication.domain.repository.AuthenticationRepository
+import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.GetUserIdUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LoginUseCases
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LoginWithEmailUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.SignUpUseCases
@@ -52,5 +53,13 @@ object AuthenticationModule {
             validatePassword = ValidatePasswordUseCase(),
             signupWithEmail = SignupWithEmailUseCase(repository)
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetUserIdUseCase(
+        repository: AuthenticationRepository
+    ): GetUserIdUseCase{
+        return GetUserIdUseCase(repository)
     }
 }
