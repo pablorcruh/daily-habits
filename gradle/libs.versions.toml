@@ -24,6 +24,8 @@ uiToolingPreviewVersion = "1.12.1"
 uiToolingVersion = "1.12.1"
 material = "1.12.1"
 googleServie = "4.5.0"
+runtimeVersion = "1.12.1"
+desugar_jdk_libs = "2.0.3"
 
 
 [libraries]
@@ -73,6 +75,8 @@ firebase-analitycs = {group = "com.google.firebase", name = "firebase-analytics"
 firebase-authentication = {group = "com.google.firebase", name = "firebase-auth"}
 firebase-firestore = {group="com.google.firebase", name="firebase-firestore"}
 firebase-storage = {group = "com.google.firebase", name = "firebase-storage"}
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtimeVersion" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
 
 [plugins]

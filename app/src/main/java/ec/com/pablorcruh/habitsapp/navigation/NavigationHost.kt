@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginScreen
 import ec.com.pablorcruh.habitsapp.authentication.presentation.signup.SignupScreen
+import ec.com.pablorcruh.habitsapp.home.presentation.home.HomeScreen
 import ec.com.pablorcruh.habitsapp.onboarding.presentation.OnboardingScreen
 
 @Composable
@@ -43,7 +44,7 @@ fun NavigationHost(
             })
         }
         composable(NavigationRoute.Home.route){
-            Text(text = "home screen")
+            HomeScreen()
         }
     }
 }
