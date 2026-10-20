@@ -1,0 +1,14 @@
+package ec.com.pablorcruh.habitsapp.home.domain.models
+
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.ZonedDateTime
+
+data class Habit(
+    val id: String,
+    val name: String,
+    val frequency: List<DayOfWeek>,
+    val completedDates: List<LocalDate>,
+    val reminder: LocalDate,
+    val startDate: ZonedDateTime
+)
