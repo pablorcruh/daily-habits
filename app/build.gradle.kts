@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -85,6 +86,10 @@ dependencies {
     implementation(libs.firebase.authentication)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
+
+    // Compose Dialog
+    implementation(libs.core)
+    implementation(libs.clock)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

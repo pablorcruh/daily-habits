@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginScreen
 import ec.com.pablorcruh.habitsapp.authentication.presentation.signup.SignupScreen
+import ec.com.pablorcruh.habitsapp.home.presentation.detail.DetailScreen
 import ec.com.pablorcruh.habitsapp.home.presentation.home.HomeScreen
 import ec.com.pablorcruh.habitsapp.onboarding.presentation.OnboardingScreen
 
@@ -44,7 +45,24 @@ fun NavigationHost(
             })
         }
         composable(NavigationRoute.Home.route){
-            HomeScreen()
+            HomeScreen(
+                onNewHabit = {
+                    navHostController.navigate(NavigationRoute.Detail.route)
+                },
+                onSettings = {
+                    navHostController.navigate(NavigationRoute.Settings.route)
+                }
+            )
+        }
+        composable(NavigationRoute.Detail.route){
+            DetailScreen(
+                onBack = {
+                    navHostController.popBackStack()
+                },
+                onSave = {
+                    navHostController.popBackStack()
+                }
+            )
         }
     }
 }
