@@ -65,7 +65,9 @@ fun DetailScreen(
             title = { Text(text = "Home") },
             navigationIcon = {
                 IconButton(
-                    onClick = {}
+                    onClick = {
+                        onBack
+                    }
                 ) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "arrow back")
                 }
