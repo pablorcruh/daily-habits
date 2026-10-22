@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.dagger.hilt) apply false
     alias(libs.plugins.devTools) apply false
     alias(libs.plugins.googleService) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }

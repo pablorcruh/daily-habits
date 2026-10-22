@@ -3,8 +3,10 @@ package ec.com.pablorcruh.habitsapp.navigation
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import ec.com.pablorcruh.habitsapp.authentication.presentation.login.LoginScreen
 import ec.com.pablorcruh.habitsapp.authentication.presentation.signup.SignupScreen
 import ec.com.pablorcruh.habitsapp.home.presentation.detail.DetailScreen
@@ -51,10 +53,19 @@ fun NavigationHost(
                 },
                 onSettings = {
                     navHostController.navigate(NavigationRoute.Settings.route)
+                },
+                onEditHabit = {
+                    navHostController.navigate(NavigationRoute.Detail.route + "?habitId=$it")
                 }
             )
         }
-        composable(NavigationRoute.Detail.route){
+        composable(NavigationRoute.Detail.route + "?habitId={habitId}", arguments = listOf(
+            navArgument("habitId"){
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            }
+        )){
             DetailScreen(
                 onBack = {
                     navHostController.popBackStack()

@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.devTools)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.googleService)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -32,11 +34,14 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
+    }
+    kotlin {
+        jvmToolchain(17)
     }
 }
 
@@ -92,5 +97,12 @@ dependencies {
     implementation(libs.clock)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.converter.moshi)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler.ksp)
+
 
 }
