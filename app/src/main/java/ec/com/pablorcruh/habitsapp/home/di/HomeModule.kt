@@ -33,12 +33,12 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun providesHabitDao(@ApplicationContext context: Context, moshi:Moshi): HomeDao{
+    fun providesHabitDao(@ApplicationContext context: Context): HomeDao{
         return Room.databaseBuilder(
             context,
             HomeDatabase::class.java,
             "habits_db"
-        ).addTypeConverter(moshi).build().dao
+        ).addTypeConverter(HomeTypeConverters()).build().dao
     }
 
     @Provides

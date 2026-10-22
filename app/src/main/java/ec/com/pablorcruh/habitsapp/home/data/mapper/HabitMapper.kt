@@ -15,7 +15,7 @@ fun HabitEntity.toDomain(): Habit {
             DayOfWeek.of(it)
         },
         completedDates = this.completeDays.map{it.toZonedDateTime().toLocalDate()},
-        reminder = this.reminder.toZonedDateTime().toLocalDate(),
+        reminder = this.reminder.toZonedDateTime().toLocalTime(),
         startDate = this.startDate.toZonedDateTime()
     )
 }
