@@ -3,6 +3,8 @@ package ec.com.pablorcruh.habitsapp.home.domain.home.useCases
 import ec.com.pablorcruh.habitsapp.home.domain.models.Habit
 import ec.com.pablorcruh.habitsapp.home.domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import java.time.ZonedDateTime
 
 class GetHabitsForDateUseCase(
@@ -10,6 +12,8 @@ class GetHabitsForDateUseCase(
 ) {
 
     operator fun invoke(date: ZonedDateTime): Flow<List<Habit>> {
-        return repository.getAllHabitsSelectedDate(date)
+        return repository.getAllHabitsSelectedDate(date).distinctUntilChanged().map{
+            it.filter{it.frequency.contains(date.dayOfWeek)}
+        }
     }
 }

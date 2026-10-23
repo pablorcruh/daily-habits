@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.HomeUseCases
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,7 +41,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getHabits(){
         viewModelScope.launch {
-            homeUseCases.getHabitsForDateUseCase(state.selectedDate).collect{
+            homeUseCases.getHabitsForDateUseCase(state.selectedDate).collectLatest{
                 state = state.copy(
                     habits = it
                 )

@@ -11,6 +11,7 @@ import dagger.hilt.components.SingletonComponent
 import ec.com.pablorcruh.habitsapp.home.data.local.HomeDao
 import ec.com.pablorcruh.habitsapp.home.data.local.HomeDatabase
 import ec.com.pablorcruh.habitsapp.home.data.local.typeconverter.HomeTypeConverters
+import ec.com.pablorcruh.habitsapp.home.data.remote.dto.HomeApi
 import ec.com.pablorcruh.habitsapp.home.data.repository.HomeRepositoryImpl
 import ec.com.pablorcruh.habitsapp.home.domain.detail.useCases.DetailUseCases
 import ec.com.pablorcruh.habitsapp.home.domain.detail.useCases.GetHabitByIdUseCase
@@ -19,16 +20,35 @@ import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.CompleteHabitUseCas
 import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.GetHabitsForDateUseCase
 import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.HomeUseCases
 import ec.com.pablorcruh.habitsapp.home.domain.repository.HomeRepository
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object HomeModule {
-
     @Singleton
     @Provides
     fun provideMoshi(): Moshi{
         return Moshi.Builder().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply{
+            level = HttpLoggingInterceptor.Level.BODY
+        }).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeApi(client: OkHttpClient): HomeApi {
+        return Retrofit.Builder().baseUrl(HomeApi.BASE_URL).client(client)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build().create(HomeApi::class.java)
     }
 
     @Provides
@@ -43,8 +63,8 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun providesHomeRepository(dao: HomeDao): HomeRepository {
-        return HomeRepositoryImpl(dao)
+    fun providesHomeRepository(dao: HomeDao, api: HomeApi): HomeRepository {
+        return HomeRepositoryImpl(dao, api)
     }
 
     @Provides

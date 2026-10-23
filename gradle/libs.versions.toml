@@ -28,8 +28,9 @@ desugar_jdk_libs = "2.0.3"
 material3Version = "1.4.0"
 room="2.8.4"
 serialization = "1.9.0"
-retrofit ="3.0.0"
+
 ksp = "2.3.12"
+loggingInterceptorVersion = "5.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -89,7 +90,7 @@ room-compiler-ksp={group="androidx.room", name="room-compiler", version.ref="roo
 kotlinx-serialization-json = {group="org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref="serialization"}
 converter-kotlinx-serialization = {module="com.squareup.retrofit2:converter-kotlinx-serialization", version.ref="retrofitVersion"}
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofitVersion" }
-
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptorVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
