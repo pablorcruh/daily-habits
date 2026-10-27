@@ -1,5 +1,6 @@
 package ec.com.pablorcruh.habitsapp.home.presentation.home
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ec.com.pablorcruh.habitsapp.R
+import ec.com.pablorcruh.habitsapp.home.presentation.home.components.HomeAskPermission
 import ec.com.pablorcruh.habitsapp.home.presentation.home.components.HomeDateSelector
 import ec.com.pablorcruh.habitsapp.home.presentation.home.components.HomeHabit
 import ec.com.pablorcruh.habitsapp.home.presentation.home.components.HomeQuote
@@ -64,6 +66,9 @@ fun HomeScreen(
             Icon(imageVector = Icons.Default.Add, contentDescription = "Create Habit")
         }
     }) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            HomeAskPermission(permission = android.Manifest.permission.POST_NOTIFICATIONS)
+        }
         LazyColumn(modifier = Modifier.padding(it).padding(start=20.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             contentPadding = PaddingValues(bottom = 20.dp)

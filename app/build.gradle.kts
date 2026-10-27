@@ -106,5 +106,6 @@ dependencies {
 
     implementation(libs.logging.interceptor)
 
+    implementation(libs.accompanist.permissions)
 
 }
