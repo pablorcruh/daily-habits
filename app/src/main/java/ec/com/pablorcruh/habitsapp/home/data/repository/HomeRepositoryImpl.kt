@@ -7,6 +7,7 @@ import ec.com.pablorcruh.habitsapp.home.data.mapper.toDto
 import ec.com.pablorcruh.habitsapp.home.data.mapper.toEntity
 import ec.com.pablorcruh.habitsapp.home.data.remote.dto.HomeApi
 import ec.com.pablorcruh.habitsapp.home.data.remote.util.resultOf
+import ec.com.pablorcruh.habitsapp.home.domain.alarm.AlarmHandler
 import ec.com.pablorcruh.habitsapp.home.domain.models.Habit
 import ec.com.pablorcruh.habitsapp.home.domain.repository.HomeRepository
 import kotlinx.coroutines.CancellationException
@@ -20,7 +21,8 @@ import java.time.ZonedDateTime
 
 class HomeRepositoryImpl(
     private val dao: HomeDao,
-    private val api: HomeApi
+    private val api: HomeApi,
+    private val alarmHandler: AlarmHandler
 ): HomeRepository {
 
     override fun getAllHabitsSelectedDate(date: ZonedDateTime): Flow<List<Habit>> {
@@ -51,10 +53,14 @@ class HomeRepositoryImpl(
     }
 
     private suspend fun insertHabits(habits:List<Habit>){
-        dao.insertHabits(habits.map{it.toEntity()})
+        habits.forEach {
+            handleAlarm(it)
+            dao.insertHabit(it.toEntity())
+        }
     }
 
     override suspend fun insertHabit(habit: Habit) {
+        handleAlarm(habit)
         dao.insertHabit(habit.toEntity())
         resultOf{
             api.insertHabit(habit.toDto())
@@ -62,6 +68,14 @@ class HomeRepositoryImpl(
     }
 
     override suspend fun getHabitById(id: String): Habit {
-        return dao.getHabitById(id)!!.toDomain()
+        return dao.getHabitById(id).toDomain()
+    }
+
+    private suspend fun handleAlarm(habit: Habit){
+        try{
+            val previous = dao.getHabitById(habit.id)
+            alarmHandler.cancel(previous.toDomain())
+        }catch(e: Exception){}
+        alarmHandler.setRecurringAlarm(habit)
     }
 }

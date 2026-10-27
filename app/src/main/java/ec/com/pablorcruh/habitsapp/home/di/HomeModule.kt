@@ -8,11 +8,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ec.com.pablorcruh.habitsapp.home.data.alarm.AlarmHandlerImpl
 import ec.com.pablorcruh.habitsapp.home.data.local.HomeDao
 import ec.com.pablorcruh.habitsapp.home.data.local.HomeDatabase
 import ec.com.pablorcruh.habitsapp.home.data.local.typeconverter.HomeTypeConverters
 import ec.com.pablorcruh.habitsapp.home.data.remote.dto.HomeApi
 import ec.com.pablorcruh.habitsapp.home.data.repository.HomeRepositoryImpl
+import ec.com.pablorcruh.habitsapp.home.domain.alarm.AlarmHandler
 import ec.com.pablorcruh.habitsapp.home.domain.detail.useCases.DetailUseCases
 import ec.com.pablorcruh.habitsapp.home.domain.detail.useCases.GetHabitByIdUseCase
 import ec.com.pablorcruh.habitsapp.home.domain.detail.useCases.InsertHabitUseCase
@@ -33,6 +35,12 @@ object HomeModule {
     @Provides
     fun provideMoshi(): Moshi{
         return Moshi.Builder().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmHandler(@ApplicationContext context: Context): AlarmHandler{
+        return AlarmHandlerImpl(context)
     }
 
     @Provides
@@ -63,8 +71,8 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun providesHomeRepository(dao: HomeDao, api: HomeApi): HomeRepository {
-        return HomeRepositoryImpl(dao, api)
+    fun providesHomeRepository(dao: HomeDao, api: HomeApi, alarmHandler: AlarmHandler): HomeRepository {
+        return HomeRepositoryImpl(dao, api, alarmHandler)
     }
 
     @Provides

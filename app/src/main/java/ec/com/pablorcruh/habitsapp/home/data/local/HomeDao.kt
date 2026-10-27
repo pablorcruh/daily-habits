@@ -17,7 +17,7 @@ interface HomeDao {
     suspend fun insertHabits(habits: List<HabitEntity>)
 
     @Query("SELECT * FROM habits WHERE id = :id")
-    fun getHabitById(id: String): HabitEntity?
+    suspend fun getHabitById(id: String): HabitEntity
 
     @Query("SELECT * FROM habits WHERE startDate <= :date")
     fun getAllHabitsForSelectedDate(date: Long): Flow<List<HabitEntity>>
