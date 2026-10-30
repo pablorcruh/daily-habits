@@ -76,6 +76,10 @@ dependencies {
 
     // Hilt
     implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+
+
     debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.dagger.hilt.compiler)          // must be ksp, not implementation or kapt
     ksp(libs.kotlinMetadataJvm)

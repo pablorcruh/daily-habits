@@ -2,6 +2,7 @@ package ec.com.pablorcruh.habitsapp.home.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -21,6 +22,7 @@ import ec.com.pablorcruh.habitsapp.home.domain.detail.useCases.InsertHabitUseCas
 import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.CompleteHabitUseCase
 import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.GetHabitsForDateUseCase
 import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.HomeUseCases
+import ec.com.pablorcruh.habitsapp.home.domain.home.useCases.SyncHabitUseCase
 import ec.com.pablorcruh.habitsapp.home.domain.repository.HomeRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -37,6 +39,11 @@ object HomeModule {
         return Moshi.Builder().build()
     }
 
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager{
+        return WorkManager.getInstance(context)
+    }
     @Provides
     @Singleton
     fun provideAlarmHandler(@ApplicationContext context: Context): AlarmHandler{
@@ -71,8 +78,8 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun providesHomeRepository(dao: HomeDao, api: HomeApi, alarmHandler: AlarmHandler): HomeRepository {
-        return HomeRepositoryImpl(dao, api, alarmHandler)
+    fun providesHomeRepository(dao: HomeDao, api: HomeApi, alarmHandler: AlarmHandler, workManager: WorkManager): HomeRepository {
+        return HomeRepositoryImpl(dao, api, alarmHandler, workManager)
     }
 
     @Provides
@@ -80,7 +87,8 @@ object HomeModule {
     fun provideHomeUseCases(repository: HomeRepository): HomeUseCases {
         return HomeUseCases(
             completeHabitUseCase = CompleteHabitUseCase(repository),
-            getHabitsForDateUseCase = GetHabitsForDateUseCase(repository)
+            getHabitsForDateUseCase = GetHabitsForDateUseCase(repository),
+            syncHabitsUseCase = SyncHabitUseCase(repository)
         )
     }
 
@@ -92,4 +100,6 @@ object HomeModule {
             insertHabitUseCase = InsertHabitUseCase(repository)
         )
     }
+
+
 }

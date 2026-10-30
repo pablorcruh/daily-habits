@@ -5,6 +5,7 @@ import ec.com.pablorcruh.habitsapp.home.data.extension.toStartOfDateTimestamp
 import ec.com.pablorcruh.habitsapp.home.data.extension.toTimeStamp
 import ec.com.pablorcruh.habitsapp.home.data.extension.toZonedDateTime
 import ec.com.pablorcruh.habitsapp.home.data.local.entity.HabitEntity
+import ec.com.pablorcruh.habitsapp.home.data.local.entity.HabitSyncEntity
 import ec.com.pablorcruh.habitsapp.home.data.remote.dto.HabitDto
 import ec.com.pablorcruh.habitsapp.home.data.remote.dto.HabitResponse
 import ec.com.pablorcruh.habitsapp.home.domain.models.Habit
@@ -59,4 +60,8 @@ fun Habit.toDto(): HabitResponse{
         startDate = this.startDate.toStartOfDateTimestamp()
     )
     return mapOf(id to dto)
+}
+
+fun Habit.toSyncEntity(): HabitSyncEntity{
+    return HabitSyncEntity(id)
 }
