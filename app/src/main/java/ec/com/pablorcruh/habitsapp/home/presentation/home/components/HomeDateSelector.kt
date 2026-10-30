@@ -18,7 +18,7 @@ fun HomeDateSelector(
     daysToShow: Int = 4
 ){
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ){

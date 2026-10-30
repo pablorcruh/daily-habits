@@ -22,7 +22,6 @@ import java.time.ZonedDateTime
 
 @Composable
 fun HomeDateItem(
-
     date: ZonedDateTime,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
@@ -38,7 +37,7 @@ fun HomeDateItem(
                 .background(Color.White)
                 .size(50.dp)
                 .clickable{
-                    onClick
+                    onClick()
                 },
             contentAlignment = Alignment.Center
         ){
