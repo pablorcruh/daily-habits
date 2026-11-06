@@ -33,4 +33,7 @@ interface HomeDao {
     @Delete
     suspend fun deleteHabitSync(habitSyncEntity: HabitSyncEntity)
 
+    @Query("SELECT * FROM habits")
+    fun getAllHabits(): List<HabitEntity>
+
 }
