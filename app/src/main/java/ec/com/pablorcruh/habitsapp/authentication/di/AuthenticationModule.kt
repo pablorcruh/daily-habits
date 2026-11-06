@@ -11,6 +11,7 @@ import ec.com.pablorcruh.habitsapp.authentication.domain.repository.Authenticati
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.GetUserIdUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LoginUseCases
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LoginWithEmailUseCase
+import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.LogoutUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.SignUpUseCases
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.SignupWithEmailUseCase
 import ec.com.pablorcruh.habitsapp.authentication.domain.usecase.ValidateEmailUseCase
@@ -61,5 +62,14 @@ object AuthenticationModule {
         repository: AuthenticationRepository
     ): GetUserIdUseCase{
         return GetUserIdUseCase(repository)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideLogoutUseCase(
+        repository: AuthenticationRepository
+    ): LogoutUseCase{
+        return LogoutUseCase(repository)
     }
 }

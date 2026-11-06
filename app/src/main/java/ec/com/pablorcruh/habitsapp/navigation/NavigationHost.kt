@@ -12,11 +12,13 @@ import ec.com.pablorcruh.habitsapp.authentication.presentation.signup.SignupScre
 import ec.com.pablorcruh.habitsapp.home.presentation.detail.DetailScreen
 import ec.com.pablorcruh.habitsapp.home.presentation.home.HomeScreen
 import ec.com.pablorcruh.habitsapp.onboarding.presentation.OnboardingScreen
+import ec.com.pablorcruh.habitsapp.settings.presentation.SettingsScreen
 
 @Composable
 fun NavigationHost(
     navHostController : NavHostController,
-    startDestination: NavigationRoute
+    startDestination: NavigationRoute,
+    logout: () -> Unit
 ){
 
     NavHost(navController = navHostController, startDestination = startDestination.route){
@@ -72,6 +74,22 @@ fun NavigationHost(
                 },
                 onSave = {
                     navHostController.popBackStack()
+                }
+            )
+        }
+
+        composable(NavigationRoute.Settings.route){
+            SettingsScreen(
+                onBack = {
+                    navHostController.popBackStack()
+                },
+                onLogout = {
+                    logout()
+                    navHostController.navigate(NavigationRoute.Login.route){
+                        popUpTo(navHostController.graph.id){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
